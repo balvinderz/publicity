@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "592266551494",
+    "firebase_url": "https://publicity-app.firebaseio.com",
+    "project_id": "publicity-app",
+    "storage_bucket": "publicity-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:592266551494:android:51702fe91d2cb4d7",
+        "android_client_info": {
+          "package_name": "vinay.com.publicity"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "592266551494-jvh4sr3qik7hmi5m181e8d88nam45ffi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "vinay.com.publicity",
+            "certificate_hash": "f2c3beee3ec51626885c0730a1947eea3609aa2d"
+          }
+        },
+        {
+          "client_id": "592266551494-gfa2en779tqtlk281uvva0slfmsmdmc7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0S1dtYtxIXTQibGGgnpN0TC5xDJ0s3yM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "592266551494-gfa2en779tqtlk281uvva0slfmsmdmc7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/add"
+            android:icon="@drawable/ic_person_add_black_24dp"
+            android:title="ADD" />
+        <item
+            android:id="@+id/search"
+            android:icon="@drawable/ic_search_black_24dp"
+            android:title="Search" />
+
+    </group>
+
+    <item android:title="Accounts">
+        <menu>
+            <item
+                android:id="@+id/logOut"
+                android:icon="@drawable/ic_settings_power_black_24dp"
+                android:title="LogOut" />
+            <item
+                android:id="@+id/ptour"
+                android:icon="@drawable/ic_motorcycle_black_24dp"
+                android:title="Product Tour" />
+        </menu>
+    </item>
+
+</menu>
