@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -28,6 +29,9 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -48,7 +52,8 @@ public class AddFormFragment extends Fragment {
 
     Firebase eventRef;
     Firebase entriesRef;
-
+FirebaseDatabase firebaseDatabase;
+DatabaseReference databaseReference;
     String eventName;
     String receiptId;
     int totalCost;
@@ -91,6 +96,9 @@ public class AddFormFragment extends Fragment {
             transaction.replace(R.id.fragment_container, addFragment);
             transaction.commit();
         }
+        firebaseDatabase=FirebaseDatabase.getInstance();
+        databaseReference=firebaseDatabase.getReference();
+
         name= (TextView) getActivity().findViewById(R.id.name);
         mobile= (TextView) getActivity().findViewById(R.id.Mobile);;
         email= (TextView) getActivity().findViewById(R.id.email);;
@@ -101,7 +109,7 @@ public class AddFormFragment extends Fragment {
         balance= (TextView) getActivity().findViewById(R.id.tvBalance);
         chkMember=(CheckBox)getActivity().findViewById(R.id.chkMember);
         balance.setText(""+totalCost);
-        eventRef.addListenerForSingleValueEvent(new ValueEventListener() {
+      /*  eventRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds :dataSnapshot.getChildren()){
@@ -118,8 +126,29 @@ public class AddFormFragment extends Fragment {
             public void onCancelled(FirebaseError firebaseError) {
 
             }
-        });
+        });*/
+databaseReference.child("events").addListenerForSingleValueEvent(new com.google.firebase.database.ValueEventListener() {
+    @Override
+    public void onDataChange(@NonNull com.google.firebase.database.DataSnapshot dataSnapshot) {
+        for(com.google.firebase.database.DataSnapshot ds:dataSnapshot.getChildren())
+        {
+            event=ds.getValue(Event.class);
+            if(event.getName().equals(eventName)){
+                key=ds.getKey();
+                break;
+            }
+            else
+            {
+                event=null;
+            }
+        }
+    }
 
+    @Override
+    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+    }
+});
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -174,9 +203,10 @@ public class AddFormFragment extends Fragment {
                        event.setNo_payment_due(event.getNo_payment_due() + 1);
                    }
                    event.setTotal_cost(event.getTotal_cost() + entry.getPayment());
-                   entriesRef.push().setValue(entry);
+                   databaseReference.child("entries").push().setValue(entry);
 
-                   eventRef.child(key).setValue(event);
+               //    eventRef.child(key).setValue(event);
+                   databaseReference.child(key).setValue(event);
                    //sharedPrefeernce update
                    final SharedPreferences sp = getActivity().getSharedPreferences(
                            SharedResources.SharedUSERDATA,
@@ -186,7 +216,7 @@ public class AddFormFragment extends Fragment {
                            sp.getInt(SharedResources.SharedENTRIES, -99) + 1);
                    editor.apply();
                    //user data update
-                   userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+              /*     userRef.addListenerForSingleValueEvent(new ValueEventListener() {
                        @Override
                        public void onDataChange(DataSnapshot dataSnapshot) {
                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
@@ -205,7 +235,30 @@ public class AddFormFragment extends Fragment {
                        public void onCancelled(FirebaseError firebaseError) {
 
                        }
-                   });
+                   });*/
+              databaseReference.child("users").addListenerForSingleValueEvent(new com.google.firebase.database.ValueEventListener() {
+                  @Override
+                  public void onDataChange(@NonNull com.google.firebase.database.DataSnapshot dataSnapshot) {
+                      for(com.google.firebase.database.DataSnapshot ds:dataSnapshot.getChildren())
+                      {
+                          User user1=ds.getValue(User.class);
+                          if(user1.getMember_initial().equals(sp.getString(SharedResources.SharedInital,""))){
+                              UserKey=ds.getKey();
+                              user1.setLast_entry(user1.getLast_entry() + 1);
+                         //     userRef.child(UserKey).setValue(user1);
+                              databaseReference.child("users").setValue(user1);
+                              break;
+
+                          }
+
+                      }
+                  }
+
+                  @Override
+                  public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                  }
+              });
                    //------------------------------------------------------------------
                    clear();
                    android.support.v4.app.FragmentTransaction transaction =

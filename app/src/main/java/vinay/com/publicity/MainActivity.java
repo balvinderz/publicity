@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -26,6 +27,9 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Collections;
 import java.util.List;
@@ -44,6 +48,8 @@ public class MainActivity extends AppCompatActivity
 
 
     Firebase eventRef;
+    FirebaseDatabase database;
+    DatabaseReference databaseReference;
 
     //local DB
     EventDatabaseOperations DB;
@@ -56,6 +62,8 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle("Publicity");
+database=FirebaseDatabase.getInstance();
+databaseReference=database.getReference();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -181,7 +189,7 @@ public class MainActivity extends AppCompatActivity
     void storeEventsInLocal(){
         if(isNetworkConnected()){
             eventRef=new Firebase(SharedResources.EVENT);
-            eventRef.addValueEventListener(new ValueEventListener() {
+       /*     databaseReference.child("events").addValueEventListener(new com.google.firebase.database.ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     EventDatabaseOperations DB = new EventDatabaseOperations(getApplicationContext());
@@ -196,7 +204,24 @@ public class MainActivity extends AppCompatActivity
                 public void onCancelled(FirebaseError firebaseError) {
 
                 }
-            });
+            });*/
+       databaseReference.child("events").addValueEventListener(new com.google.firebase.database.ValueEventListener() {
+           @Override
+           public void onDataChange(@NonNull com.google.firebase.database.DataSnapshot dataSnapshot) {
+               EventDatabaseOperations DB=new EventDatabaseOperations(getApplicationContext());
+               DB.clearAll();
+               for(com.google.firebase.database.DataSnapshot ds :dataSnapshot.getChildren())
+               {
+                   Event event=ds.getValue(Event.class);
+                   DB.putInformation(DB,event.getName(),event.getCost());
+               }
+           }
+
+           @Override
+           public void onCancelled(@NonNull DatabaseError databaseError) {
+
+           }
+       });
         }else{
             DB=new EventDatabaseOperations(getApplicationContext());
             CR=DB.getInformation(DB);
