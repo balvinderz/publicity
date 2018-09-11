@@ -204,9 +204,12 @@ databaseReference.child("events").addListenerForSingleValueEvent(new com.google.
                    }
                    event.setTotal_cost(event.getTotal_cost() + entry.getPayment());
                    databaseReference.child("entries").push().setValue(entry);
+int balance=event.getbalance();
+balance=balance+entry.getBalance();
+event.setBalance(balance);
 
                //    eventRef.child(key).setValue(event);
-                   databaseReference.child(key).setValue(event);
+                   databaseReference.child("events").child(key).setValue(event);
                    //sharedPrefeernce update
                    final SharedPreferences sp = getActivity().getSharedPreferences(
                            SharedResources.SharedUSERDATA,
@@ -246,7 +249,7 @@ databaseReference.child("events").addListenerForSingleValueEvent(new com.google.
                               UserKey=ds.getKey();
                               user1.setLast_entry(user1.getLast_entry() + 1);
                          //     userRef.child(UserKey).setValue(user1);
-                              databaseReference.child("users").setValue(user1);
+                              databaseReference.child("users").child(UserKey).setValue(user1);
                               break;
 
                           }

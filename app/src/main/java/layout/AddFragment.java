@@ -23,6 +23,8 @@ import android.widget.TextView;
 
 import com.firebase.client.Firebase;
 import com.firebase.ui.FirebaseListAdapter;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,7 +43,8 @@ import vinay.com.publicity.R;
 public class AddFragment extends Fragment {
 
     ListView list;
-
+FirebaseDatabase firebaseDatabase;
+DatabaseReference databaseReference;
     Firebase eventRef;
     //local DB
     EventDatabaseOperations DB;
@@ -63,6 +66,9 @@ public class AddFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         list= (ListView) getActivity().findViewById(R.id.listEvents);
         ((Toolbar) getActivity().findViewById(R.id.toolbar)).setTitle("Publicity");
+        firebaseDatabase=FirebaseDatabase.getInstance();
+        databaseReference=firebaseDatabase.getReference();
+
         if(isNetworkConnected()){
             LoadFromFirebase();
         }else{
@@ -129,7 +135,8 @@ public class AddFragment extends Fragment {
                 Event.class,
                 R.layout.event_single_row,
                 eventRef
-        ) {
+        )
+        {
             @Override
             protected void populateView(View view, Event event, int i) {
                 TextView textView= (TextView) view.findViewById(R.id.textViewEvent1);

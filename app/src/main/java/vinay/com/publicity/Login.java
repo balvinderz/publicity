@@ -20,6 +20,9 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import layout.SharedResources;
 import models.User;
@@ -30,7 +33,8 @@ public class Login extends AppCompatActivity {
     EditText password;
     Button btnLogin;
     Firebase userRef;
-
+FirebaseDatabase database;
+DatabaseReference databaseReference;
 
 
     @Override
@@ -38,10 +42,13 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login2);
         userRef=new Firebase(SharedResources.USER);
+        database=FirebaseDatabase.getInstance();
+        databaseReference=database.getReference();
         email= (EditText) findViewById(R.id.email);
         password= (EditText) findViewById(R.id.password);
         btnLogin= (Button) findViewById(R.id.btnLogin);
         checkSession();
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,13 +98,13 @@ public class Login extends AppCompatActivity {
         if (cancel) {
             focusView.requestFocus();
         } else {
-            userRef.addValueEventListener(new ValueEventListener() {
+            databaseReference.child("users").addValueEventListener(new com.google.firebase.database.ValueEventListener() {
                 @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
+                public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
                     boolean isFound=false;
                     final String android_id = Settings.Secure.getString(getBaseContext()
                             .getContentResolver(), Settings.Secure.ANDROID_ID);
-                    for(DataSnapshot ds: dataSnapshot.getChildren()){
+                    for(com.google.firebase.database.DataSnapshot ds: dataSnapshot.getChildren()){
                         User user=ds.getValue(User.class);
                         if(emailStr.equals(user.getEmail())&&passwordStr.equals(user.getPassword())){
                             if(!android_id.equals(user.getDeviceid())){
@@ -122,6 +129,7 @@ public class Login extends AppCompatActivity {
                             editor.putInt(SharedResources.SharedENTRIES,user.getLast_entry());
                             editor.apply();
                             isFound=true;
+                            MainActivity.user=user;
                             Intent intent=new Intent(getApplicationContext(),MainActivity.class);
                             startActivity(intent);
                         }
@@ -133,7 +141,7 @@ public class Login extends AppCompatActivity {
                 }
 
                 @Override
-                public void onCancelled(FirebaseError firebaseError) {
+                public void onCancelled(DatabaseError firebaseError) {
 
                 }
             });

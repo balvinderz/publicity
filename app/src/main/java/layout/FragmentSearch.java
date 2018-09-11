@@ -20,6 +20,9 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -37,7 +40,8 @@ public class FragmentSearch extends Fragment {
     Firebase entriesRef;
     Firebase costDBRef;
 
-
+FirebaseDatabase firebaseDatabase;
+DatabaseReference databaseReference;
 
     EditText receiptId;
     Button btnSearch;
@@ -78,6 +82,8 @@ public class FragmentSearch extends Fragment {
         ((Toolbar) getActivity().findViewById(R.id.toolbar)).setTitle("Search");
         receiptId= (EditText) getActivity().findViewById(R.id.receiptid);
         btnSearch= (Button) getActivity().findViewById(R.id.btnSearch);
+firebaseDatabase=FirebaseDatabase.getInstance();
+databaseReference=firebaseDatabase.getReference();
 
         tvreceiptId= (TextView) getActivity().findViewById(R.id.receiptId);
         EventName= (TextView) getActivity().findViewById(R.id.EventName);
@@ -102,11 +108,11 @@ public class FragmentSearch extends Fragment {
             public void onClick(View v) {
                 final String id=receiptId.getText().toString();
                 scrollView.setVisibility(View.INVISIBLE);
-                entriesRef.addValueEventListener(new ValueEventListener() {
+                databaseReference.child("entries").addValueEventListener(new com.google.firebase.database.ValueEventListener() {
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
+                    public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
                         boolean isFound=false;
-                        for(DataSnapshot ds: dataSnapshot.getChildren()){
+                        for(com.google.firebase.database.DataSnapshot ds: dataSnapshot.getChildren()){
                             entry=ds.getValue(Entry.class);
 
                             if(id.equals(entry.getReceiptId())){
@@ -122,7 +128,7 @@ public class FragmentSearch extends Fragment {
                     }
 
                     @Override
-                    public void onCancelled(FirebaseError firebaseError) {
+                    public void onCancelled(DatabaseError firebaseError) {
 
                     }
                 });
@@ -135,10 +141,10 @@ public class FragmentSearch extends Fragment {
             public void onClick(View v) {
 
                 costDBRef=new Firebase(SharedResources.EVENT);
-                costDBRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                databaseReference.child("events").addListenerForSingleValueEvent(new com.google.firebase.database.ValueEventListener() {
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (DataSnapshot ds :dataSnapshot.getChildren()){
+                    public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
+                        for (com.google.firebase.database.DataSnapshot ds :dataSnapshot.getChildren()){
                             event=ds.getValue(Event.class);
                             if(event.getName().equals(entry.getEventName())){
                                 keyEvent=ds.getKey();
@@ -148,8 +154,9 @@ public class FragmentSearch extends Fragment {
                             }
                         }
                         event.setTotal_cost(event.getTotal_cost()+entry.getBalance());
+                        event.setBalance(event.getbalance()-entry.getBalance());
                         event.setNo_payment_due(event.getNo_payment_due()-1);
-                        costDBRef.child(keyEvent).setValue(event);
+                        databaseReference.child("events").child(keyEvent).setValue(event);
                         entry.setPayment(entry.getPayment()+entry.getBalance());
                         entry.setBalance(0);
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
@@ -159,11 +166,11 @@ public class FragmentSearch extends Fragment {
                         SharedPreferences sp=getActivity().getSharedPreferences(
                                 SharedResources.SharedUSERDATA, Context.MODE_PRIVATE);
                         entry.setBalance_paid_by(sp.getString(SharedResources.SharedInital,""));
-                        entriesRef.child(key).setValue(entry);
+                        databaseReference.child("entries").child(key).setValue(entry);
                         event=new Event();
                     }
                     @Override
-                    public void onCancelled(FirebaseError firebaseError) {
+                    public void onCancelled(DatabaseError firebaseError) {
                     }
                 });
 

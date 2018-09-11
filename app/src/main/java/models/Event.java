@@ -11,6 +11,7 @@ public class Event {
     int no_of_participants;
     int total_cost;
     int no_payment_due;
+    int balance;
     public Event() {
     }
 
@@ -19,13 +20,14 @@ public class Event {
         this.cost = cost;
     }
 
-    public Event(String name, int cost, int csi_member, int no_of_participants, int total_cost, int no_payment_due) {
+    public Event(String name, int cost, int csi_member, int no_of_participants, int total_cost, int no_payment_due,int balance) {
         this.name = name;
         this.cost = cost;
         this.csi_member = csi_member;
         this.no_of_participants = no_of_participants;
         this.total_cost = total_cost;
         this.no_payment_due = no_payment_due;
+        this.balance=balance;
     }
 
     public int getCsi_member() {
@@ -43,6 +45,12 @@ public class Event {
     public void setNo_of_participants(int no_of_participants) {
         this.no_of_participants = no_of_participants;
     }
+public int getbalance()
+{return balance;}
+public  void setBalance(int balance)
+{
+    this.balance=balance;
+}
 
     public int getTotal_cost() {
         return total_cost;

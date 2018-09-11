@@ -36,14 +36,16 @@ import java.util.List;
 
 import database.EventDatabaseOperations;
 import layout.AddFragment;
+import layout.AdminFragment;
 import layout.FragmentSearch;
 import layout.SharedResources;
 import layout.WelcomeFragment;
 import models.Event;
+import models.User;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+public static User user;
 
 
 
@@ -133,6 +135,11 @@ databaseReference=database.getReference();
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+    //    if(user.getAdmin()==1)
+      //  {
+        //   menu.findItem(R.id.admin).setVisible(true);
+        //}
+
         return true;
     }
 
@@ -179,7 +186,15 @@ databaseReference=database.getReference();
             startActivity(new Intent(MainActivity.this, WelcomeActivity.class));
             finish();
         }
-
+        else if(id==R.id.admin)
+        {
+            android.support.v4.app.FragmentTransaction transaction =
+                    getSupportFragmentManager().beginTransaction();
+            AdminFragment addFragment = new AdminFragment();
+            transaction.replace(R.id.fragment_container, addFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

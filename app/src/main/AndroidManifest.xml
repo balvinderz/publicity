@@ -34,6 +34,7 @@
         <activity android:name=".WelcomeActivity">
 
         </activity>
+        <activity android:name="layout.BalanceOfPeople"></activity>
     </application>
 
 </manifest>

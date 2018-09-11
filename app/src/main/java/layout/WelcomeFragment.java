@@ -64,6 +64,7 @@ RelativeLayout add,search;
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         ((Toolbar) getActivity().findViewById(R.id.toolbar)).setTitle("Publicity");
+
         add= (RelativeLayout) getActivity().findViewById(R.id.addLayout);
         search= (RelativeLayout) getActivity().findViewById(R.id.searchLayout);
         add.setOnClickListener(new View.OnClickListener() {
