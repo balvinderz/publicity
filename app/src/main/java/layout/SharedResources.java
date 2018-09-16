@@ -13,6 +13,7 @@ public class SharedResources {
     public static final String SharedUSERDATA="session";
     public static final String SharedNAME="NAME";
     public static final String SharedInital="INITAL";
+    public static final String SharedIsAdmin="IsAdmin";
     public static final String SharedENTRIES="NOENTRIES";
     public static final String ADMINNO="+919653114938";
     public SharedResources()

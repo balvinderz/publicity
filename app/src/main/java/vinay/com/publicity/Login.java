@@ -4,11 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.provider.Settings;
+import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -57,6 +59,7 @@ DatabaseReference databaseReference;
         });
     }
     private void checkSession(){
+
         SharedPreferences sp=getSharedPreferences(
                 SharedResources.SharedUSERDATA,
                 Context.MODE_PRIVATE);
@@ -65,6 +68,8 @@ DatabaseReference databaseReference;
                         (!(sp.getString(SharedResources.SharedNAME,"null").equals("null")))&&
                         (sp.getInt(SharedResources.SharedENTRIES,-99)!=-99)
                 ){
+
+
             Intent intent=new Intent(getApplicationContext(),MainActivity.class);
 
             startActivity(intent);
@@ -127,6 +132,7 @@ DatabaseReference databaseReference;
                             editor.putString(SharedResources.SharedNAME,user.getMember_name());
                             editor.putString(SharedResources.SharedInital,user.getMember_initial());
                             editor.putInt(SharedResources.SharedENTRIES,user.getLast_entry());
+                            editor.putInt(SharedResources.SharedIsAdmin,user.getAdmin());
                             editor.apply();
                             isFound=true;
                             MainActivity.user=user;

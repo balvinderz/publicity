@@ -72,9 +72,9 @@ databaseReference=database.getReference();
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+//Log.i("checking something",String.valueOf(user.getAdmin()));
         /*Firebase eventref=new Firebase(SharedResources.EVENT);
         Event event=new Event("NTPP",60,0,0,0,0);
         eventref.push().setValue(event);
@@ -99,7 +99,16 @@ databaseReference=database.getReference();
         event.setName("digital picasso");
         eventref.push().setValue(event);
 */
-
+        SharedPreferences sp=getSharedPreferences(
+                SharedResources.SharedUSERDATA,
+                Context.MODE_PRIVATE);
+        Log.i("checkingkyaaatahai",String.valueOf(sp.getInt(SharedResources.SharedIsAdmin,-99)));
+       if(sp.getInt(SharedResources.SharedIsAdmin,-99)==0)
+        {
+            NavigationView nav = findViewById(R.id.nav_view);
+            Menu menu = nav.getMenu();
+            menu.findItem(R.id.adminbar).setVisible(false);
+        }
         storeEventsInLocal();
 
         android.support.v4.app.FragmentTransaction transaction =
@@ -121,6 +130,7 @@ databaseReference=database.getReference();
 
     }
 
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -140,7 +150,9 @@ databaseReference=database.getReference();
         //   menu.findItem(R.id.admin).setVisible(true);
         //}
 
+
         return true;
+
     }
 
 
@@ -186,7 +198,7 @@ databaseReference=database.getReference();
             startActivity(new Intent(MainActivity.this, WelcomeActivity.class));
             finish();
         }
-        else if(id==R.id.admin)
+        else if(id==R.id.adminbar)
         {
             android.support.v4.app.FragmentTransaction transaction =
                     getSupportFragmentManager().beginTransaction();
