@@ -20,6 +20,7 @@ public class Entry {
     String payed_at;
     String balance_payed_at;
     String balance_paid_by;
+    String collectby;
 
     public Entry() {
     }
@@ -27,7 +28,7 @@ public class Entry {
     public Entry(String receiptId, String name, String mobile, String email, String college,
                  String year, String eventName, int payment, String status, boolean csimember,
                  int balance, String payed_at, String balance_payed_at, String balance_paid_by,
-                 boolean paid) {
+                 boolean paid,String collectedby) {
         this.receiptId = receiptId;
         this.name = name;
         this.mobile = mobile;
@@ -43,11 +44,21 @@ public class Entry {
         this.balance_payed_at = balance_payed_at;
         this.balance_paid_by = balance_paid_by;
         this.paid=paid;
+        this.collectby=collectedby;
     }
 
     public String getReceiptId() {
         return receiptId;
     }
+public String getCollectby()
+{
+    return collectby;
+}
+public void setCollectby(String collectby)
+{
+    this.collectby=collectby;
+}
+
 
     public void setReceiptId(String receiptId) {
         this.receiptId = receiptId;

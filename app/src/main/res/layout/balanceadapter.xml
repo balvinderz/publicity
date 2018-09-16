@@ -29,5 +29,9 @@
         android:layout_height="wrap_content"
         android:text="email id:"
         android:id="@+id/entryemail"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/collector"/>
 </LinearLayout>
 </android.support.v7.widget.CardView>

@@ -40,6 +40,7 @@ import java.util.Locale;
 import models.Entry;
 import models.Event;
 import models.User;
+import vinay.com.publicity.MainActivity;
 import vinay.com.publicity.R;
 
 /**
@@ -173,6 +174,7 @@ databaseReference.child("events").addListenerForSingleValueEvent(new com.google.
                            "",//balance payed at
                            "",//balance paid by
                            true//paid or not
+                           , MainActivity.user.getMember_name()
                    );
                    //sending message----------------------------------
                    //SEND TO participant

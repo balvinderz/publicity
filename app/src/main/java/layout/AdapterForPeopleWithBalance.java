@@ -17,7 +17,7 @@ public class AdapterForPeopleWithBalance extends RecyclerView.Adapter<AdapterFor
     ArrayList<Entry> entries;
     public class MyViewHolder extends RecyclerView.ViewHolder
     {
-        public TextView name,balance,no,email;
+        public TextView name,balance,no,email,collector;
 
         public MyViewHolder(View view)
         {
@@ -26,6 +26,7 @@ name=view.findViewById(R.id.entryname);
 balance=view.findViewById(R.id.entrybalance);
 no=view.findViewById(R.id.entryphone);
 email=view.findViewById(R.id.entryemail);
+collector=view.findViewById(R.id.collector);
         }
     }
     public  AdapterForPeopleWithBalance(ArrayList<Entry> entries)
@@ -48,6 +49,11 @@ this.entries=entries;
         holder.balance.setText("balance : "+ String.valueOf(entry.getBalance()));
         holder.no.setText("phone no : "+entry.getMobile());
         holder.email.setText("email id : "+entry.getEmail());
+        String s=entry.getReceiptId();
+StringBuffer l=new StringBuffer();
+int i=0;
+
+        holder.collector.setText("Collected by :" +entry.getCollectby() );
 
     }
     @Override
