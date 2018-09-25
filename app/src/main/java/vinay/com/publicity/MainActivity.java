@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 public static User user;
 
+public static String membername;
 
 
     Firebase eventRef;
@@ -66,7 +67,10 @@ public static User user;
         toolbar.setTitle("Publicity");
 database=FirebaseDatabase.getInstance();
 databaseReference=database.getReference();
-
+        SharedPreferences sp=getSharedPreferences(
+                SharedResources.SharedUSERDATA,
+                Context.MODE_PRIVATE);
+        membername=sp.getString(SharedResources.SharedNAME,"null");
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -99,9 +103,7 @@ databaseReference=database.getReference();
         event.setName("digital picasso");
         eventref.push().setValue(event);
 */
-        SharedPreferences sp=getSharedPreferences(
-                SharedResources.SharedUSERDATA,
-                Context.MODE_PRIVATE);
+
         Log.i("checkingkyaaatahai",String.valueOf(sp.getInt(SharedResources.SharedIsAdmin,-99)));
        if(sp.getInt(SharedResources.SharedIsAdmin,-99)==0)
         {

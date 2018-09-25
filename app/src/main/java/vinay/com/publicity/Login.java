@@ -26,6 +26,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import layout.SharedResources;
 import models.User;
 
@@ -111,33 +114,37 @@ DatabaseReference databaseReference;
                             .getContentResolver(), Settings.Secure.ANDROID_ID);
                     for(com.google.firebase.database.DataSnapshot ds: dataSnapshot.getChildren()){
                         User user=ds.getValue(User.class);
-                        if(emailStr.equals(user.getEmail())&&passwordStr.equals(user.getPassword())){
-                            if(!android_id.equals(user.getDeviceid())){
-                                final TextView tv=(TextView)findViewById(R.id.tvFindId);
-                                tv.setVisibility(View.VISIBLE);
-                                tv.setTextIsSelectable(true);
-                                tv.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        tv.setText(android_id);
-                                    }
-                                });
-                                isFound=false;
-                                break;
+                        try {
+                            if(emailStr.equals(user.getEmail())&&getmd5(passwordStr).equals(user.getPassword())){
+                                if(!android_id.equals(user.getDeviceid())){
+                                    final TextView tv=(TextView)findViewById(R.id.tvFindId);
+                                    tv.setVisibility(View.VISIBLE);
+                                    tv.setTextIsSelectable(true);
+                                    tv.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            tv.setText(android_id);
+                                        }
+                                    });
+                                    isFound=false;
+                                    break;
+                                }
+                                SharedPreferences sharedPreferences=getSharedPreferences(
+                                        SharedResources.SharedUSERDATA,
+                                        Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor=sharedPreferences.edit();
+                                editor.putString(SharedResources.SharedNAME,user.getMember_name());
+                                editor.putString(SharedResources.SharedInital,user.getMember_initial());
+                                editor.putInt(SharedResources.SharedENTRIES,user.getLast_entry());
+                                editor.putInt(SharedResources.SharedIsAdmin,user.getAdmin());
+                                editor.apply();
+                                isFound=true;
+                                MainActivity.user=user;
+                                Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+                                startActivity(intent);
                             }
-                            SharedPreferences sharedPreferences=getSharedPreferences(
-                                    SharedResources.SharedUSERDATA,
-                                    Context.MODE_PRIVATE);
-                            SharedPreferences.Editor editor=sharedPreferences.edit();
-                            editor.putString(SharedResources.SharedNAME,user.getMember_name());
-                            editor.putString(SharedResources.SharedInital,user.getMember_initial());
-                            editor.putInt(SharedResources.SharedENTRIES,user.getLast_entry());
-                            editor.putInt(SharedResources.SharedIsAdmin,user.getAdmin());
-                            editor.apply();
-                            isFound=true;
-                            MainActivity.user=user;
-                            Intent intent=new Intent(getApplicationContext(),MainActivity.class);
-                            startActivity(intent);
+                        } catch (NoSuchAlgorithmException e) {
+                            e.printStackTrace();
                         }
                     }
                     if(!isFound) {
@@ -160,5 +167,17 @@ DatabaseReference databaseReference;
     private boolean isPasswordValid(String password) {
         return password.length() > 6;
     }
-
+public String getmd5(String pass) throws NoSuchAlgorithmException {
+    MessageDigest md = MessageDigest.getInstance("MD5");
+    byte[] passBytes = pass.getBytes();
+    md.reset();
+    byte[] digested = md.digest(passBytes);
+    StringBuffer sb = new StringBuffer();
+    for(int i=0;i<digested.length;i++){
+        sb.append(Integer.toHexString(0xff & digested[i]));
+    }
+    Log.i("checkinghashedpassword",sb.toString());
+    pass=sb.toString();
+    return pass;
+}
 }

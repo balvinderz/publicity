@@ -174,7 +174,7 @@ databaseReference.child("events").addListenerForSingleValueEvent(new com.google.
                            "",//balance payed at
                            "",//balance paid by
                            true//paid or not
-                           , MainActivity.user.getMember_name()
+                           ,MainActivity.membername
                    );
                    //sending message----------------------------------
                    //SEND TO participant
