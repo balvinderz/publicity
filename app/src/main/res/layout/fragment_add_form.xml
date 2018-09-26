@@ -25,15 +25,9 @@
                 android:id="@+id/chkMember"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="CSI Member" />
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/team"
-                android:layout_margin="10dp"
 
-                android:text="Team"/>
+                android:text="CSI Member" />
+
 </LinearLayout>
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -56,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:hint="mobile"
                     android:id="@+id/Mobile"
-                    android:inputType="number"/>
+                   />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -117,27 +111,6 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true" />
             </RelativeLayout>
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_alignParentStart="true"
-                android:layout_toStartOf="@+id/tvBalance">
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Payment"
-                    android:id="@+id/paywithteam"
-                    android:visibility="gone"
-                    android:inputType="numberDecimal"/>
-            </android.support.design.widget.TextInputLayout>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone"
-                android:hint="Balance"
-                android:id="@+id/balance"/>
-
             <Button
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"

@@ -10,8 +10,8 @@ public class Event {
     int csi_member;
     int no_of_participants;
     int total_cost;
-    int no_payment_due;
     int balance;
+    int no_payment_due;
     public Event() {
     }
 
@@ -26,14 +26,23 @@ public class Event {
         this.csi_member = csi_member;
         this.no_of_participants = no_of_participants;
         this.total_cost = total_cost;
-        this.no_payment_due = no_payment_due;
         this.balance=balance;
+        this.no_payment_due = no_payment_due;
     }
 
     public int getCsi_member() {
         return csi_member;
     }
+    public int getbalance()
+    {
+        return  balance;
+    }
 
+public void setBalance(int balance)
+{
+    this.balance=balance;
+
+}
     public void setCsi_member(int csi_member) {
         this.csi_member = csi_member;
     }
@@ -45,12 +54,6 @@ public class Event {
     public void setNo_of_participants(int no_of_participants) {
         this.no_of_participants = no_of_participants;
     }
-public int getbalance()
-{return balance;}
-public  void setBalance(int balance)
-{
-    this.balance=balance;
-}
 
     public int getTotal_cost() {
         return total_cost;

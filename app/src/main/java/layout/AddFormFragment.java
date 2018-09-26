@@ -69,13 +69,11 @@ DatabaseReference databaseReference;
     TextView balance;
     Button btnAdd;
     CheckBox chkMember;
-CheckBox team;
 int t=0;
     boolean isCSI=false;
     Event event;
     String key;
 
-    EditText bala,paywithteam;
     String UserKey;
     public AddFormFragment() {
         // Required empty public constructor
@@ -113,9 +111,8 @@ int t=0;
         btnAdd= (Button) getActivity().findViewById(R.id.btnAdd);
         balance= (TextView) getActivity().findViewById(R.id.tvBalance);
         chkMember=(CheckBox)getActivity().findViewById(R.id.chkMember);
-        team =(CheckBox) getActivity().findViewById(R.id.team);
-        bala=getActivity().findViewById(R.id.balance);
-        paywithteam=getActivity().findViewById(R.id.paywithteam);
+     //   team =(CheckBox) getActivity().findViewById(R.id.team);
+     //   paywithteam=getActivity().findViewById(R.id.paywithteam);
         balance.setText(""+totalCost);
       /*  eventRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -165,8 +162,7 @@ databaseReference.child("events").addListenerForSingleValueEvent(new com.google.
                         == PackageManager.PERMISSION_GRANTED && validate()) {
                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
                    String time = sdf.format(new Date());
-                   if(t==0)
-                   {
+
                     entry = new Entry(
                            receiptId,
                            name.getText().toString(),
@@ -184,28 +180,8 @@ databaseReference.child("events").addListenerForSingleValueEvent(new com.google.
                            "",//balance paid by
                            true//paid or not
                            ,MainActivity.membername
-                   );}
-                   else
-                   {
-                        entry = new Entry(
-                               receiptId,
-                               name.getText().toString(),
-                               mobile.getText().toString(),
-                               email.getText().toString(),
-                               college.getText().toString(),
-                               String.valueOf(year.getSelectedItem()),
-                               eventName,
-                               Integer.parseInt(paywithteam.getText().toString()),
-                               "new",//status,
-                               false,//csi member set it later
-                               Integer.parseInt(bala.getText().toString()),
-                               time,
-                               "",//balance payed at
-                               "",//balance paid by
-                               true//paid or not
-                               ,MainActivity.membername
-                       );
-                   }
+                   );
+
                    //sending message----------------------------------
                    //SEND TO participant
                    String textmsg="RAIT EVENTS\n"+
@@ -307,7 +283,6 @@ event.setBalance(balance);
                }
             }
         });
-        if(t==0)
         payment.setFilters(new InputFilter[]{ new InputFilterMinMax(0, totalCost)});
         payment.addTextChangedListener(new TextWatcher() {
             @Override
@@ -354,25 +329,7 @@ event.setBalance(balance);
                 payment.setFilters(new InputFilter[]{ new InputFilterMinMax(0, totalCost)});
             }
         });
-        team.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (((CheckBox) view).isChecked()) {
-                balance.setVisibility(View.GONE);
-                bala.setVisibility(View.VISIBLE);
-                payment.setVisibility(View.GONE);
-                paywithteam.setVisibility(View.VISIBLE);
-                t=1;
-                }
-                else
-                {
-                    balance.setVisibility(View.VISIBLE);
-                    t=0;
-                    bala.setVisibility(View.GONE);
-                    payment.setVisibility(View.VISIBLE);
-                }
-                }
-        });
+
     }
     private void clear()
     {
@@ -384,7 +341,6 @@ event.setBalance(balance);
         year.setSelection(0);
         payment.setText("");
         chkMember.setChecked(false);
-        team.setChecked(false);
     }
     public void setEvent(String eventName,String receiptId,int cost){
         this.eventName=eventName;
@@ -400,31 +356,10 @@ event.setBalance(balance);
                 !mobile.getText().toString().isEmpty()&&
                 !email.getText().toString().isEmpty()&&
                 !college.getText().toString().isEmpty()&&
-                !year.isSelected()
-                ){
-            if(payment.getText().toString().isEmpty())
-            {
-                if (paywithteam.getText().toString().isEmpty())
-                {
-                    paywithteam.setError("enter payment");
-                    flag=false;
-                }
-            }
+                !year.isSelected()&&
+                !payment.getText().toString().isEmpty()){
             // TODO: 26-08-2016 add all type of validation
-            if(mobile.getText().toString().length()!=10){
-                //mobile wrong
-                mobile.setError("enter valid mobile no");
-                flag=false;
-            }
-            if(!isValidName(name.getText().toString())){
-                //name wrong
-                name.setError("enter valid name");
-                flag=false;
-            }
-            if(!isEmailValid(email.getText().toString())){
-                email.setError("enter valid email id");
-                flag=false;
-            }
+          Log.i("asb","asb");
         }else {
             flag=false;
             Toast.makeText(getActivity(), "Fill every details first!!", Toast.LENGTH_SHORT).show();
@@ -469,9 +404,7 @@ event.setBalance(balance);
         }
 
         private boolean isInRange(int a, int b, int c) {
-            if(t==0)
-                return true;
-            else
+
             return b > a ? c >= a && c <= b : c >= b && c <= a;
         }
     }
