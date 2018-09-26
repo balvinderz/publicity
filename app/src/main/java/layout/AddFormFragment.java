@@ -140,6 +140,12 @@ databaseReference.child("events").addListenerForSingleValueEvent(new com.google.
             event=ds.getValue(Event.class);
             if(event.getName().equals(eventName)){
                 key=ds.getKey();
+                if(event.getName().equals("Counter Strike")||event.getName().equals("Counter Strike (Re-Entry)")||event.getName().equals("FIFA 19(PS4)")||event.getName().equals("NFS Most Wanted")
+                        || event.getName().equals("NLTPP 2018(Single)")||event.getName().equals("NLTPP 2018(Team of 2)")||event.getName().equals("NLTPP 2018(Team of 3)")
+                        || event.getName().equals("Cric-O-Lumina")||event.getName().equals("Placement Mantra and Aim-4-Masters")||event.getName().equals("Gwiggle and Market Mayhem (Team of 2)")
+                        ||event.getName().equals("Gwiggle and Market Mayhem (Single)")||event.getName().equals("'C'mulator and Java Jargon (Team of 2)")||event.getName().equals("'C'mulator and Java Jargon (Single)")
+                        )
+                    chkMember.setVisibility(View.GONE);
                 break;
             }
             else
