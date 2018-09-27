@@ -187,6 +187,8 @@ databaseReference.child("events").addListenerForSingleValueEvent(new com.google.
                            true//paid or not
                            ,MainActivity.membername
                    );
+String no=mobile.getText().toString();
+String z=no.substring(0,10);
 
                    //sending message----------------------------------
                    //SEND TO participant
@@ -196,7 +198,7 @@ databaseReference.child("events").addListenerForSingleValueEvent(new com.google.
                            "EventName:"+eventName+"\n"+
                            "COST:"+totalCost+"\n"+
                            "Balance:"+balance.getText().toString();
-                   String phoneNO="+91"+mobile.getText().toString();
+                   String phoneNO="+91"+z;
                    SmsManager smsManager = SmsManager.getDefault();
                    smsManager.sendTextMessage(phoneNO, null, textmsg, null, null);
                    Toast.makeText(getActivity(), "Msg sent to participant!", Toast.LENGTH_SHORT).show();
