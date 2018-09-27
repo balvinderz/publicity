@@ -27,11 +27,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/money"
+                android:visibility="gone"
                 android:text="Money collected: "/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/balance"
+                android:visibility="gone"
                 android:text="money to be collected: "/>
         </LinearLayout>
         <Button

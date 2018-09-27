@@ -153,8 +153,6 @@ databaseReference=firebaseDatabase.getReference();
                                 event=null;
                             }
                         }
-                        event.setTotal_cost(event.getTotal_cost()+entry.getBalance());
-                        event.setBalance(event.getbalance()-entry.getBalance());
                         event.setNo_payment_due(event.getNo_payment_due()-1);
                         databaseReference.child("events").child(keyEvent).setValue(event);
                         entry.setPayment(entry.getPayment()+entry.getBalance());

@@ -132,6 +132,7 @@ int t=0;
 
             }
         });*/
+      databaseReference.keepSynced(true);
 databaseReference.child("events").addListenerForSingleValueEvent(new com.google.firebase.database.ValueEventListener() {
     @Override
     public void onDataChange(@NonNull com.google.firebase.database.DataSnapshot dataSnapshot) {
@@ -218,11 +219,7 @@ String z=no.substring(0,10);
                        entry.setPaid(false);
                        event.setNo_payment_due(event.getNo_payment_due() + 1);
                    }
-                   event.setTotal_cost(event.getTotal_cost() + entry.getPayment());
                    databaseReference.child("entries").push().setValue(entry);
-int balance=event.getbalance();
-balance=balance+entry.getBalance();
-event.setBalance(balance);
 
                //    eventRef.child(key).setValue(event);
                    databaseReference.child("events").child(key).setValue(event);

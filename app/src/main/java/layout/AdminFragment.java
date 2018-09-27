@@ -39,9 +39,11 @@ public  static ArrayList<String> eventnames=new ArrayList<String>();
 public  static ArrayList<Integer> moneycollected=new ArrayList<Integer>();
 public static ArrayList<Entry> entries=new ArrayList<Entry>();
     int size = 0;
-    int i = 0;
+    int i = 0,j=0;
     int l=0;
-    int balancez;
+    String even;
+    int balancez,money;
+    ArrayList<Integer> balanceadapter =new ArrayList<>();
     String eventname;
     public AdminFragment() {
         // Required empty public constructor
@@ -89,6 +91,7 @@ public static ArrayList<Entry> entries=new ArrayList<Entry>();
 
             }
         });
+
         FirebaseListAdapter<Event> adapter= new FirebaseListAdapter<Event>(
                 getActivity(),
                 Event.class,
@@ -99,11 +102,7 @@ public static ArrayList<Entry> entries=new ArrayList<Entry>();
             @Override
             protected void populateView(View view, Event event, int i) {
                 final TextView textView= (TextView) view.findViewById(R.id.xyz);
-                TextView textView2= (TextView) view.findViewById(R.id.money);
-                TextView textView3=(TextView) view.findViewById(R.id.balance);
                 textView.setText(event.getName());
-                textView2.setText("Money collected: "+event.getTotal_cost());
-                textView3.setText("Money to be collected: "+event.getbalance());
               final  Button button=view.findViewById(R.id.nothing);
                  l=0;
                 button.setOnClickListener(new View.OnClickListener() {
@@ -135,6 +134,12 @@ public static ArrayList<Entry> entries=new ArrayList<Entry>();
                             }
                         });
 
+                        Log.i("checkingsize",String.valueOf(balanceadapter.size()));
+                        for(int k=0;k<balanceadapter.size();k++)
+                        {
+                            Log.i("balance",String.valueOf(balanceadapter.get(k)));
+                            Log.i("moneycollected",String.valueOf(balanceadapter.get(k)));
+                        }
                             startActivity(intent);
 
                     }
